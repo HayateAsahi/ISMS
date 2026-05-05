@@ -23,13 +23,14 @@ document.addEventListener('DOMContentLoaded', function () {
   var contactForm = document.getElementById('contactForm');
   if (contactForm) {
     var submitBtn = contactForm.querySelector('.btn-submit');
+    var feedback = document.getElementById('contactFeedback');
     var inputs = contactForm.querySelectorAll('input[required], textarea[required]');
-
-    function sanitize(str) {
-      var div = document.createElement('div');
-      div.appendChild(document.createTextNode(str));
-      return div.innerHTML;
-    }
+    var submitLabel = submitBtn ? submitBtn.textContent : '';
+    var isSubmitting = false;
+    var emailInput = document.getElementById('email');
+    var phoneInput = document.getElementById('phone');
+    var emailError = document.getElementById('contactEmailError');
+    var phoneError = document.getElementById('contactPhoneError');
 
     function isValidEmail(email) {
       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -39,7 +40,38 @@ document.addEventListener('DOMContentLoaded', function () {
       return /^[\d\-+() ]{6,20}$/.test(phone);
     }
 
+    function syncFieldError(input, error, message, validator) {
+      if (!input || !error) return true;
+
+      var value = input.value.trim();
+      var hasFormatError = value !== '' && !validator(value);
+
+      input.setCustomValidity(hasFormatError ? message : '');
+      input.setAttribute('aria-invalid', hasFormatError ? 'true' : 'false');
+      error.textContent = hasFormatError ? message : '';
+
+      return !hasFormatError;
+    }
+
+    function syncFieldErrors() {
+      var emailIsValid = syncFieldError(
+        emailInput,
+        emailError,
+        'メールアドレスの形式が正しくありません。',
+        isValidEmail
+      );
+      var phoneIsValid = syncFieldError(
+        phoneInput,
+        phoneError,
+        '電話番号は数字・ハイフンを含む6〜20文字で入力してください。',
+        isValidPhone
+      );
+
+      return emailIsValid && phoneIsValid;
+    }
+
     function validateForm() {
+      syncFieldErrors();
       var allFilled = true;
       inputs.forEach(function (input) {
         if (input.type === 'checkbox') {
@@ -48,11 +80,36 @@ document.addEventListener('DOMContentLoaded', function () {
           allFilled = false;
         }
       });
-      var emailInput = document.getElementById('email');
-      var phoneInput = document.getElementById('phone');
       if (emailInput && emailInput.value && !isValidEmail(emailInput.value)) allFilled = false;
       if (phoneInput && phoneInput.value && !isValidPhone(phoneInput.value)) allFilled = false;
-      submitBtn.disabled = !allFilled;
+      submitBtn.disabled = isSubmitting || !allFilled;
+    }
+
+    function setFeedback(message, type) {
+      if (!feedback) return;
+
+      feedback.textContent = message;
+      feedback.className = 'contact-form__feedback';
+
+      if (type) {
+        feedback.classList.add('contact-form__feedback--' + type);
+      }
+    }
+
+    function applyFeedbackFromQuery() {
+      var params = new URLSearchParams(window.location.search);
+      var status = params.get('contact_status');
+      var message = params.get('contact_message');
+
+      if (!status || !message) return;
+
+      setFeedback(message, status === 'success' ? 'success' : 'error');
+      params.delete('contact_status');
+      params.delete('contact_message');
+
+      var nextSearch = params.toString();
+      var nextUrl = window.location.pathname + (nextSearch ? '?' + nextSearch : '') + window.location.hash;
+      window.history.replaceState({}, document.title, nextUrl);
     }
 
     inputs.forEach(function (input) {
@@ -60,21 +117,61 @@ document.addEventListener('DOMContentLoaded', function () {
       input.addEventListener('change', validateForm);
     });
 
+    applyFeedbackFromQuery();
+    validateForm();
+
     contactForm.addEventListener('submit', function (e) {
       e.preventDefault();
-      var formData = {};
-      var textInputs = contactForm.querySelectorAll('input:not([type="checkbox"]), textarea');
-      textInputs.forEach(function (input) {
-        formData[input.name] = sanitize(input.value.trim());
-      });
-      var emailInput = document.getElementById('email');
-      var phoneInput = document.getElementById('phone');
+
+      var hasValidInlineFields = syncFieldErrors();
+
+      if (!contactForm.checkValidity()) {
+        if (hasValidInlineFields) {
+          contactForm.reportValidity();
+        }
+        validateForm();
+        return;
+      }
+
       if (!isValidEmail(emailInput.value)) return;
       if (!isValidPhone(phoneInput.value)) return;
+
+      var formData = new FormData(contactForm);
       submitBtn.disabled = true;
+      isSubmitting = true;
+      setFeedback('');
       submitBtn.textContent = '送信中...';
-      console.log('Form data (sanitized):', formData);
-      submitBtn.textContent = '送信完了';
+
+      fetch(contactForm.getAttribute('action') || 'contact.php', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          Accept: 'application/json'
+        }
+      })
+        .then(function (response) {
+          return response.json().catch(function () {
+            return null;
+          }).then(function (result) {
+            if (!response.ok || !result || !result.data || !result.data.sent) {
+              var fields = result && result.error && result.error.fields;
+              var firstFieldError = fields ? Object.values(fields)[0] : '';
+              var message = firstFieldError || (result && result.error && result.error.message) || 'お問い合わせの送信に失敗しました。時間をおいて再度お試しください。';
+              throw new Error(message);
+            }
+
+            setFeedback(result.data.message || 'お問い合わせを受け付けました。', 'success');
+            contactForm.reset();
+          });
+        })
+        .catch(function (error) {
+          setFeedback(error && error.message ? error.message : 'お問い合わせの送信に失敗しました。時間をおいて再度お試しください。', 'error');
+        })
+        .finally(function () {
+          isSubmitting = false;
+          submitBtn.textContent = submitLabel;
+          validateForm();
+        });
     });
   }
 

@@ -34,11 +34,13 @@
     <div class="hero-diamond hero-diamond--l">
       <div class="hero-diamond-shape"></div>
     </div>
-    <div class="hero-person-r">
-      <img src="img/hero-r.png" alt="ISO27001支援コンサルタント" class="hero-person-r-image">
-    </div>
-    <div class="hero-person-l">
-      <img src="img/hero-l.jpg" alt="ISO27001支援コンサルタント" class="hero-person-l-image">
+    <div class="hero-persons">
+      <div class="hero-person-r">
+        <img src="img/hero-r.png" alt="ISO27001支援コンサルタント" class="hero-person-r-image">
+      </div>
+      <div class="hero-person-l">
+        <img src="img/hero-l.jpg" alt="ISO27001支援コンサルタント" class="hero-person-l-image">
+      </div>
     </div>
     <div class="container hero-content">
       <p class="hero-label">ISO27001（ISMS）認証取得支援サービス</p>
@@ -603,22 +605,33 @@
   <section class="final-cta" id="contact">
     <div class="container">
       <h2 class="final-cta-title">ISMS（ISO27001）取得、<br class="sp-only">まずは無料でご相談ください</h2>
-      <form class="contact-form" id="contactForm">
+      <form class="contact-form" id="contactForm" action="contact.php" method="POST">
+        <input type="hidden" name="return_to" value="index.html#contact">
+        <div class="contact-form__honeypot" aria-hidden="true">
+          <label>
+            Website
+            <input type="text" name="website" tabindex="-1" autocomplete="off">
+          </label>
+        </div>
         <div class="form-group">
           <label for="company">会社名<span class="required">*</span></label>
-          <input type="text" id="company" name="company" required placeholder="例：株式会社あわいコンサルティング">
+          <input type="text" id="company" name="company_name" required placeholder="例：株式会社あわいコンサルティング">
         </div>
         <div class="form-group">
           <label for="name">担当者名<span class="required">*</span></label>
-          <input type="text" id="name" name="name" required placeholder="例：山田 太郎">
+          <input type="text" id="name" name="person_name" required placeholder="例：山田 太郎">
         </div>
         <div class="form-group">
           <label for="email">メールアドレス<span class="required">*</span></label>
-          <input type="email" id="email" name="email" required placeholder="例：info@example.com">
+          <input type="email" id="email" name="email" required placeholder="例：info@example.com"
+            aria-describedby="contactEmailError">
+          <p id="contactEmailError" class="contact-form__field-error" role="alert"></p>
         </div>
         <div class="form-group">
           <label for="phone">電話番号<span class="required">*</span></label>
-          <input type="tel" id="phone" name="phone" required placeholder="例：03-1234-5678">
+          <input type="tel" id="phone" name="phone" required inputmode="tel" placeholder="例：03-1234-5678"
+            aria-describedby="contactPhoneError">
+          <p id="contactPhoneError" class="contact-form__field-error" role="alert"></p>
         </div>
         <div class="form-group">
           <label for="message">お問い合わせ内容<span class="required">*</span></label>
@@ -626,7 +639,7 @@
         </div>
         <div class="form-group form-checkbox">
           <label>
-            <input type="checkbox" id="privacy" name="privacy" required>
+            <input type="checkbox" id="privacy" name="privacy_consent" required>
             <p class="contact-form__consent-note text-sm">
               お問合せフォームをご利用の際は、「<a href="https://awai-consulting.co.jp/privacy-handling"
                 class="contact-form__privacy-link" target="_blank"
@@ -634,6 +647,7 @@
             </p>
           </label>
         </div>
+        <p id="contactFeedback" class="contact-form__feedback" aria-live="polite"></p>
         <button type="submit" class="btn btn-white btn-xl btn-block btn-submit" disabled>送信する</button>
       </form>
     </div>
