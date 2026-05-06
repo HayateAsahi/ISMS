@@ -11,7 +11,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="icon" type="image/svg+xml" href="./img/awai-favicon.svg" />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;900&display=swap"
+  <link rel="preload" href="styles.css" as="style">
+  <link rel="preload" href="img/hero-r.avif" as="image" type="image/avif" fetchpriority="high">
+  <link rel="preload" href="img/hero-l.avif" as="image" type="image/avif" fetchpriority="high">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -22,7 +25,7 @@
   <header class="header">
     <div class="container header-inner">
       <a href="https://awai-consulting.co.jp/" class="logo">
-        <img src="./img/awai-logo.png" alt="" aria-hidden="true" />
+        <img src="./img/awai-logo.png" alt="" aria-hidden="true" width="192" height="191" />
         <span class="logo-text">
           <span class="logo-name">株式会社あわいコンサルティング</span>
           <span class="logo-sub">ISO27001支援</span>
@@ -42,10 +45,20 @@
     </div>
     <div class="hero-persons">
       <div class="hero-person-r">
-        <img src="img/hero-r.png" alt="ISO27001支援コンサルタント" class="hero-person-r-image">
+        <picture>
+          <source srcset="img/hero-r.avif" type="image/avif">
+          <source srcset="img/hero-r.webp" type="image/webp">
+          <img src="img/hero-r.png" alt="ISO27001支援コンサルタント" class="hero-person-r-image" width="629"
+            height="1110" fetchpriority="high" decoding="async">
+        </picture>
       </div>
       <div class="hero-person-l">
-        <img src="img/hero-l.png" alt="ISO27001支援コンサルタント" class="hero-person-l-image">
+        <picture>
+          <source srcset="img/hero-l.avif" type="image/avif">
+          <source srcset="img/hero-l.webp" type="image/webp">
+          <img src="img/hero-l.png" alt="ISO27001支援コンサルタント" class="hero-person-l-image" width="847"
+            height="1280" fetchpriority="high" decoding="async">
+        </picture>
       </div>
     </div>
     <div class="container hero-content">
@@ -69,31 +82,6 @@
     </div>
   </section>
 
-  <!-- 数値実績セクション -->
-  <!-- <section class="stats">
-    <div class="container">
-      <div class="stats-grid">
-        <div class="stat-item">
-          <span class="stat-number">150<span class="stat-unit">社</span></span>
-          <span class="stat-label">支援実績</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-number">98<span class="stat-unit">%</span></span>
-          <span class="stat-label">取得成功率</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-number">6<span class="stat-unit">ヶ月</span></span>
-          <span class="stat-label">平均取得期間</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-number">80<span class="stat-unit">%</span></span>
-          <span class="stat-label">工数削減率</span>
-        </div>
-      </div>
-      <p class="stats-note">※数値は支援実績に基づく平均値です</p>
-    </div>
-  </section> -->
-
   <!-- 課題共感セクション -->
   <section class="problems" id="problems">
     <div class="container">
@@ -101,7 +89,11 @@
       <div class="image-left-section">
         <div class="image-left-sticky">
           <div class="image-left-visual">
-            <img src="./img/problems-img.png" alt="">
+            <picture>
+              <source srcset="./img/problems-img.avif" type="image/avif">
+              <source srcset="./img/problems-img.webp" type="image/webp">
+              <img src="./img/problems-img.png" alt="" width="2528" height="2328" loading="lazy" decoding="async">
+            </picture>
           </div>
         </div>
         <div class="image-left-content">
@@ -384,189 +376,6 @@
     </div>
   </section>
 
-  <!-- 事例セクション -->
-  <!-- <section class="cases" id="cases">
-    <div class="container">
-      <h2 class="section-title">導入企業の取得実績</h2>
-      <div class="cases-grid">
-        <div class="case-card">
-          <div class="case-result">6ヶ月で取得、担当者の残業ゼロを実現</div>
-          <div class="case-info">
-            <span class="case-industry">IT企業</span>
-            <span class="case-size">従業員50名</span>
-          </div>
-          <div class="case-body">
-            <div class="case-challenge">
-              <h4>課題</h4>
-              <p>情報システム担当が1名で兼務。通常業務と並行してのISMS構築が必要だった。</p>
-            </div>
-            <div class="case-solution">
-              <h4>支援内容</h4>
-              <p>テンプレート活用で文書作成を効率化。週1回のオンラインMTGで進捗管理を実施。</p>
-            </div>
-            <div class="case-outcome">
-              <h4>結果</h4>
-              <p>担当者の月間作業時間を40時間→8時間に削減。残業なしで6ヶ月後に一発合格。</p>
-            </div>
-          </div>
-        </div>
-        <div class="case-card">
-          <div class="case-result">取引先要件を満たし、大型案件を受注</div>
-          <div class="case-info">
-            <span class="case-industry">SaaS企業</span>
-            <span class="case-size">従業員120名</span>
-          </div>
-          <div class="case-body">
-            <div class="case-challenge">
-              <h4>課題</h4>
-              <p>大手企業との取引でISO27001が必須条件に。3ヶ月以内の取得が求められた。</p>
-            </div>
-            <div class="case-solution">
-              <h4>支援内容</h4>
-              <p>既存のセキュリティ体制を活かした効率的なISMS構築。集中支援プランで対応。</p>
-            </div>
-            <div class="case-outcome">
-              <h4>結果</h4>
-              <p>4ヶ月で取得完了。取得後に年間契約額3,000万円の大型案件を受注。</p>
-            </div>
-          </div>
-        </div>
-        <div class="case-card">
-          <div class="case-result">全社の情報セキュリティ意識が向上</div>
-          <div class="case-info">
-            <span class="case-industry">製造業</span>
-            <span class="case-size">従業員200名</span>
-          </div>
-          <div class="case-body">
-            <div class="case-challenge">
-              <h4>課題</h4>
-              <p>社員のセキュリティ意識が低く、インシデントが年に数回発生していた。</p>
-            </div>
-            <div class="case-solution">
-              <h4>支援内容</h4>
-              <p>部門別の研修プログラムを提供。業務フローに沿ったセキュリティルールを構築。</p>
-            </div>
-            <div class="case-outcome">
-              <h4>結果</h4>
-              <p>7ヶ月で取得。取得後1年間のセキュリティインシデントがゼロに。</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="cases-cta">
-        <a href="#contact" class="btn btn-primary btn-lg">自社の取得プランを相談する</a>
-      </div>
-    </div>
-  </section> -->
-
-  <!-- 料金セクション -->
-  <!-- <section class="pricing" id="pricing">
-    <div class="container">
-      <h2 class="section-title">料金プラン</h2>
-      <p class="section-desc">企業規模やニーズに合わせた3つのプランをご用意。<br>すべてのプランに<strong>取得保証（不合格時追加費用0円）</strong>が付きます。</p>
-      <div class="pricing-grid">
-        <div class="pricing-card">
-          <div class="pricing-header">
-            <h3>ライトプラン</h3>
-            <p class="pricing-target">小規模企業向け（〜30名）</p>
-          </div>
-          <div class="pricing-price">
-            <span class="pricing-label">月額</span>
-            <span class="pricing-amount">お問い合わせ</span>
-          </div>
-          <ul class="pricing-features">
-            <li>基本文書テンプレートセット</li>
-            <li>メールサポート</li>
-            <li>審査対応マニュアル提供</li>
-            <li>社内研修資料提供</li>
-            <li>取得保証付き</li>
-          </ul>
-          <a href="#contact" class="btn btn-outline btn-block">詳細を相談する</a>
-        </div>
-        <div class="pricing-card pricing-card-featured">
-          <div class="pricing-badge">おすすめ</div>
-          <div class="pricing-header">
-            <h3>スタンダードプラン</h3>
-            <p class="pricing-target">中規模企業向け（30〜100名）</p>
-          </div>
-          <div class="pricing-price">
-            <span class="pricing-label">月額</span>
-            <span class="pricing-amount">お問い合わせ</span>
-          </div>
-          <ul class="pricing-features">
-            <li>全テンプレート提供</li>
-            <li>メール＋月2回オンラインMTG</li>
-            <li>模擬審査＋審査当日同席</li>
-            <li>社内研修実施（1回）</li>
-            <li>内部監査支援</li>
-            <li>取得保証付き</li>
-          </ul>
-          <a href="#contact" class="btn btn-primary btn-block">このプランで相談する</a>
-        </div>
-        <div class="pricing-card">
-          <div class="pricing-header">
-            <h3>プレミアムプラン</h3>
-            <p class="pricing-target">大規模企業向け（100名〜）</p>
-          </div>
-          <div class="pricing-price">
-            <span class="pricing-label">月額</span>
-            <span class="pricing-amount">お問い合わせ</span>
-          </div>
-          <ul class="pricing-features">
-            <li>全テンプレート＋カスタム作成</li>
-            <li>専任担当＋無制限MTG</li>
-            <li>模擬審査＋審査当日同席＋是正支援</li>
-            <li>社内研修無制限</li>
-            <li>内部監査代行</li>
-            <li>取得保証付き</li>
-          </ul>
-          <a href="#contact" class="btn btn-outline btn-block">詳細を相談する</a>
-        </div>
-      </div>
-      <div class="pricing-note">
-        <p>※ すべてのプランに<strong>初月無料</strong>が適用されます<br>
-          ※ 万が一不合格の場合、追加費用なしで再チャレンジを支援します</p>
-      </div>
-    </div>
-  </section> -->
-
-  <!-- FAQセクション -->
-  <!-- <section class="faq" id="faq">
-    <div class="container">
-      <h2 class="section-title">よくある質問</h2>
-      <div class="faq-list">
-        <details class="faq-item">
-          <summary>ISO27001の取得にはどのくらいの期間がかかりますか？</summary>
-          <p>企業規模や現在のセキュリティ体制によりますが、平均6ヶ月で取得可能です。スタンダードプラン以上であれば、最短4ヶ月での取得実績もあります。</p>
-        </details>
-        <details class="faq-item">
-          <summary>専任の担当者を置く必要はありますか？</summary>
-          <p>不要です。総務や情報システム部門の方が通常業務と兼務しながら進められるよう、専門家がプロジェクトをリードします。お客様の作業は確認・承認が中心です。</p>
-        </details>
-        <details class="faq-item">
-          <summary>取得保証とは何ですか？</summary>
-          <p>万が一審査で不合格となった場合でも、追加費用なしで再チャレンジを支援するサービスです。指摘事項への是正対応から再審査の準備まで、すべてサポートします。</p>
-        </details>
-        <details class="faq-item">
-          <summary>社内にITやセキュリティの専門知識がなくても取得できますか？</summary>
-          <p>はい、取得できます。専門知識がなくても理解できるよう、わかりやすい説明と具体的な手順をお伝えします。これまでも非IT企業での取得支援実績が多数あります。</p>
-        </details>
-        <details class="faq-item">
-          <summary>既存のセキュリティルールやツールはそのまま使えますか？</summary>
-          <p>はい、現在お使いのセキュリティツールや社内ルールを活かしたISMS構築を行います。不足している部分のみを追加・整備するため、既存の運用を大きく変える必要はありません。</p>
-        </details>
-        <details class="faq-item">
-          <summary>取得後の維持・運用もサポートしてもらえますか？</summary>
-          <p>はい、取得後の維持審査（サーベイランス審査）対応や、ISMSの継続的改善もサポートするプランをご用意しています。詳細はお問い合わせください。</p>
-        </details>
-        <details class="faq-item">
-          <summary>途中で解約することはできますか？</summary>
-          <p>月額プランのため、いつでも解約可能です。ただし、取得保証の適用は契約期間中に限ります。まずは初月無料でお試しいただき、サービスの質をご確認ください。</p>
-        </details>
-      </div>
-    </div>
-  </section> -->
-
   <!-- 無料相談でわかることセクション -->
   <section class="free-consult">
     <div class="container">
@@ -678,7 +487,7 @@
     <a href="#contact" class="btn btn-primary btn-block">無料相談はこちら</a>
   </div>
 
-  <script src="script.js"></script>
+  <script src="script.js" defer></script>
 </body>
 
 </html>
