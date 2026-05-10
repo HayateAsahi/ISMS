@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var floatingCta = document.querySelector('.floating-cta');
   var heroHeight = document.querySelector('.hero').offsetHeight;
   var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var mobileFlowQuery = window.matchMedia('(max-width: 768px)');
   var scrollTicking = false;
 
   function updateScrollState() {
@@ -32,6 +33,33 @@ document.addEventListener('DOMContentLoaded', function () {
   }, { passive: true });
 
   updateScrollState();
+
+  function syncMobileFlowStepHeight() {
+    var flowSteps = document.querySelectorAll('.flow-step');
+    if (!flowSteps.length) return;
+
+    flowSteps.forEach(function (step) {
+      step.style.minHeight = '';
+    });
+
+    if (!mobileFlowQuery.matches) return;
+
+    var maxHeight = 0;
+    flowSteps.forEach(function (step) {
+      maxHeight = Math.max(maxHeight, step.offsetHeight);
+    });
+
+    flowSteps.forEach(function (step) {
+      step.style.minHeight = maxHeight + 'px';
+    });
+  }
+
+  syncMobileFlowStepHeight();
+  window.addEventListener('resize', syncMobileFlowStepHeight);
+
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(syncMobileFlowStepHeight);
+  }
 
   var contactForm = document.getElementById('contactForm');
   if (contactForm) {
