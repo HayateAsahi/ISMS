@@ -1,9 +1,10 @@
 document.addEventListener('DOMContentLoaded', function () {
   var header = document.querySelector('.header');
   var floatingCta = document.querySelector('.floating-cta');
+  var finalCta = document.querySelector('.final-cta');
   var heroHeight = document.querySelector('.hero').offsetHeight;
   var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var mobileFlowQuery = window.matchMedia('(max-width: 768px)');
+  var mobileFlowQuery = window.matchMedia('(max-width: 767.98px)');
   var scrollTicking = false;
 
   function updateScrollState() {
@@ -15,7 +16,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     if (floatingCta) {
-      if (scrollY > heroHeight) {
+      var finalCtaTop = finalCta ? finalCta.getBoundingClientRect().top : Infinity;
+      var hasReachedFinalCta = finalCtaTop < window.innerHeight;
+
+      if (scrollY > heroHeight && !hasReachedFinalCta) {
         floatingCta.style.transform = 'translateY(0)';
       } else {
         floatingCta.style.transform = 'translateY(100%)';
